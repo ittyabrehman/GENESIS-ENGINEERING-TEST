@@ -1,0 +1,8 @@
+{
+    "targetSize": 15,
+    "includeUppercase": true,
+    "length": 20,
+    "includeLowercase": true,
+    "includeNumbers": true,
+    "uniqueStrings": true
+}

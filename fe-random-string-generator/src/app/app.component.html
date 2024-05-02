@@ -1,0 +1,25 @@
+<div class="container">
+  <h2>Random String Generator</h2>
+  <form (ngSubmit)="getStrings()  " class="card-body">
+    <p>This form allows to generate random text strings.</p>
+    <p>Generate <input type="number" formControlName="targetSize"/> random strings</p>
+    <p>Each string should be <input type="number" formControlName="length"/> characters long</p>
+
+    <div>
+      <p>Which characters are allowed to occur in the strings?</p>
+      <label><input type="checkbox" formControlName="includeNumbers"/> Numeric digits (0-9)</label><br>
+      <label><input type="checkbox" formControlName="includeUppercase"/> Uppercase letters (A-Z)</label><br>
+      <label><input type="checkbox" formControlName="includeLowercase"/> Lowercase letters (a-z)</label><br>
+    </div>
+    <br/>
+    <div>
+      <p>Do you want each string to be unique?</p>
+      <label><input type="radio" name="string_uniqueness" value="unique"> Each string should be unique</label><br>
+      <label><input type="radio" name="string_uniqueness" value="identical"> Identical strings are allowed</label><br>
+    </div>
+
+    <button class=" mt-3 me-1" (click)="getStrings()">Get Strings</button>
+    <button class=" mt-3" (click)="restForm()">Rest Form</button>
+
+  </form>
+</div>
