@@ -1,9 +1,14 @@
 package com.genesis.ittyab.randomstringgenerator.controllers;
 
 import com.genesis.ittyab.randomstringgenerator.dtos.GenerateRandomStringsRequestDto;
+import com.genesis.ittyab.randomstringgenerator.entities.RandomString;
 import com.genesis.ittyab.randomstringgenerator.services.RandomStringGeneratorService;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,4 +40,15 @@ public class RandomStringGeneratorController {
     // Return the generated random string array as a response
     return ResponseEntity.ok(randomStringArray);
   }
+
+  @GetMapping("/api/v1/randomsStringGenerator/generate/findAll")
+  public ResponseEntity<List<RandomString>> findAll(){
+    return ResponseEntity.ok(randomStringGeneratorService.findAll());
+  }
+
+  @GetMapping("/api/v1/randomsStringGenerator/generate/findByCreatedDate/{createdDate}")
+  public ResponseEntity<List<RandomString>> finAllByCreatedDate(@PathVariable("createdDate") LocalDate createdDate){
+    return ResponseEntity.ok(randomStringGeneratorService.findAllByCreatedData(createdDate));
+  }
+
 }

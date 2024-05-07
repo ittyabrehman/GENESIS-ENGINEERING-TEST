@@ -19,9 +19,16 @@ export class RandomStringGeneratorService {
       .pipe(tap((x) => this.HandleResponse(x)));
   }
 
+  public findAllStrings(){
+    this.apiUrl = 'http://localhost:8080/api/v1/randomsStringGenerator/generate/findAll'
+    return this.http?.get(this.apiUrl)
+      .pipe(tap((x) => this.HandleResponse(x)));
+  }
+
   HandleResponse(response: any) {
     if (response?.Status === 500) {
       console.error(response)
     }
+    console.log(response)
   }
 }

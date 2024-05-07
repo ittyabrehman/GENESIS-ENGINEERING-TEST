@@ -1,19 +1,28 @@
 package com.genesis.ittyab.randomstringgenerator.services;
 
+import com.genesis.ittyab.randomstringgenerator.entities.RandomString;
+import com.genesis.ittyab.randomstringgenerator.repositories.RandomStringGeneratorRepository;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
  * This class provides a service for generating unique random strings based on given parameters.
  */
+@RequiredArgsConstructor
 @Service
 public class RandomStringGeneratorService {
   private static final String CHAR_SET_LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
   private static final String CHAR_SET_UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   private static final String CHAR_SET_NUMBERS = "0123456789";
+  private final RandomStringGeneratorRepository randomStringGenerator;
 
   /**
    * Validates the target size of the random strings to be generated.
@@ -77,8 +86,15 @@ public class RandomStringGeneratorService {
     Set<String> usedStrings = new HashSet<>();
     Random random = ThreadLocalRandom.current();
 
-    return generateUniqueStrings(randomStrings, usedStrings, random, length, getCharacterSet(includeLowercase, includeUppercase, includeNumbers),
-        targetSize);
+    var generatedStrings =
+        generateUniqueStrings(randomStrings, usedStrings, random, length, getCharacterSet(includeLowercase, includeUppercase, includeNumbers),
+            targetSize);
+
+    var toSave = new ArrayList<RandomString>();
+    Arrays.stream(generatedStrings).toList().forEach(str -> toSave.add(new RandomString(str)));
+    randomStringGenerator.saveAll(toSave);
+
+    return generatedStrings;
   }
 
   /**
@@ -135,5 +151,13 @@ public class RandomStringGeneratorService {
       characterSet.append(CHAR_SET_NUMBERS);
     }
     return characterSet;
+  }
+
+  public List<RandomString> findAllByCreatedData(LocalDate createDate) {
+    return randomStringGenerator.findAllByCreatedData(createDate);
+  }
+
+  public List<RandomString> findAll() {
+    return randomStringGenerator.findAll();
   }
 }
